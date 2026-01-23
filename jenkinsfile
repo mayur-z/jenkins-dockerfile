@@ -1,0 +1,80 @@
+pipeline {
+    agent any
+    /*
+    tools {
+        maven 'maven'
+    }
+    */
+    environment {
+        AWS_ACCESS_KEY_ID = credentials('aws-id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-key')
+        AWS_DEFAULT_REGION = 'us-west-2'    
+    }
+    
+    stages {
+        stage('Checkout Code') {
+            steps {
+                echo "1111"
+               git branch: 'main', url: 'https://github.com/mayur-z/sample-index.git'
+            }
+        }
+        
+        stage('docker build') {
+            steps {
+                echo "2222"
+                // give jenkins user sudo access --> vim /etc/sudoers --> jenkins ALL=(ALL) NOPASSWD: ALL
+                sh 'sudo docker build -t test:latest .'
+                sh 'sudo docker tag test:latest 739097588595.dkr.ecr.us-west-2.amazonaws.com/ok:v1'
+            }
+        }
+        
+         stage('docker image push') {
+            steps {
+                echo "3333"
+                sh 'aws ecr get-login-password --region us-west-2 | docker login --username AWS --password-stdin 739097588595.dkr.ecr.us-west-2.amazonaws.com'
+                echo "login successsssss ok"
+                sh 'sudo docker push 739097588595.dkr.ecr.us-west-2.amazonaws.com/ok:v1'
+            }
+        }
+
+    
+        
+        
+        /*
+        stage('Build') {
+            steps {
+                echo "2222"
+                sh 'mvn clean compile'
+                sh 'mvn package'
+            }
+        }
+        
+        stage('Test') {
+            steps {
+                echo "3333"
+                sh 'mvn test'
+            }
+        }
+
+        stage('s3 Upload') {
+            steps {
+                echo "4444"
+
+                
+                sh 'aws s3 cp target/devops-app-1.0-SNAPSHOT.jar s3://s3-cbz-test/'
+            }
+        }
+        
+        stage('SonarQube Analysis') {
+            environment {
+                SONAR_HOST_URL = 'http://35.92.132.18:9000' // Replace with your SonarQube URL
+                SONAR_AUTH_TOKEN = credentials('sonarqube') // Store your token in Jenkins credentials
+            }
+            steps {
+                echo "4444"
+                sh 'mvn sonar:sonar -Dsonar.projectKey=maven_sonar -Dsonar.host.url=$SONAR_HOST_URL -Dsonar.login=$SONAR_AUTH_TOKEN'
+            }
+        }
+    } */
+}
+}
