@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: 123456789012.dkr.ecr.ap-south-1.amazonaws.com/jenkins-webapp:latest
+        image: 739097588595.dkr.ecr.us-west-2.amazonaws.com/ok:latest
         ports:
         - containerPort: 80
         imagepullSecrets:
@@ -25,10 +25,9 @@ kind: Service
 metadata:
   name: webapp-service
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: webapp
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30007
