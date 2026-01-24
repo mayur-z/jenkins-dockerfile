@@ -14,9 +14,11 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: 739097588595.dkr.ecr.us-west-2.amazonaws.com/ok:latest
+        image: 123456789012.dkr.ecr.ap-south-1.amazonaws.com/jenkins-webapp:latest
         ports:
         - containerPort: 80
+        imagepullSecrets:
+        - name: ecr-secret
 ---
 apiVersion: v1
 kind: Service
