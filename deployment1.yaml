@@ -19,15 +19,3 @@ spec:
         - containerPort: 80
         imagepullSecrets:
         - name: ecr-secret
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: webapp-service
-spec:
-  type: LoadBalancer
-  selector:
-    app: webapp
-  ports:
-    - port: 80
-      targetPort: 80
