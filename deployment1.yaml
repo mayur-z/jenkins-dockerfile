@@ -12,10 +12,11 @@ spec:
       labels:
         app: webapp
     spec:
+      imagepullSecrets:
+      - name: ecr-secret
       containers:
       - name: webapp
         image: 739097588595.dkr.ecr.us-west-2.amazonaws.com/ok:latest
         ports:
         - containerPort: 80
-        imagepullSecrets:
-        - name: ecr-secret
+        
