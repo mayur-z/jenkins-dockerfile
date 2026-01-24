@@ -1,22 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: webapp-deployment
+  name: my-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
-      app: webapp
+      app: my-app
   template:
     metadata:
       labels:
-        app: webapp
+        app: my-app
     spec:
-      imagepullSecrets:
-      - name: ecr-secret
+      imagePullSecrets:
+        - name: my-secret
       containers:
-      - name: webapp
-        image: 739097588595.dkr.ecr.us-west-2.amazonaws.com/ok:latest
-        ports:
-        - containerPort: 80
-        
+        - name: my-container
+          image: 739097588595.dkr.ecr.us-west-2.amazonaws.com/ok:latest
+          ports:
+            - containerPort: 80
